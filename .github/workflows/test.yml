@@ -12,7 +12,7 @@ jobs:
 
     services:
       redis:
-        image: redis:latest
+        image: redislabs/redisearch:latest
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
