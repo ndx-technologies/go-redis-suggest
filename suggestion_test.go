@@ -18,15 +18,15 @@ func TestRedisSuggest(t *testing.T) {
 		t.Skip("network; redis;")
 	}
 
-	addr := os.Getenv("REDIS_ADDR")
-	if addr == "" {
-		addr = "localhost:6379"
+	u := os.Getenv("REDIS_URL")
+	if u == "" {
+		u = "redis://localhost:6379"
 	}
-
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     addr,
-		Password: os.Getenv("REDIS_PASSWORD"),
-	})
+	cfg, err := redis.ParseURL(u)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rdb := redis.NewClient(cfg)
 
 	ctx := t.Context()
 	id := "test-sug:" + strconv.Itoa(rand.Int())
